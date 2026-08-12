@@ -194,7 +194,7 @@ recognition.maxAlternatives = 1;
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/chat",
+  "https://remo-backend-siq4.onrender.com/chat",
         {
           method: "POST",
 

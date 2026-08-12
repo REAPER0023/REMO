@@ -10,14 +10,15 @@ app = FastAPI(
 )
 
 # CORS Configuration
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Development only
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 class ChatRequest(BaseModel):
     message: str
