@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import "../styles/chat.css";   // <-- Add this line
+import { useEffect, useRef, useState } from "react";
+import "../styles/chat.css";
 
 import ChatSidebar from "../components/ChatSidebar";
 import ChatInput from "../components/ChatInput";
@@ -8,6 +8,8 @@ import { useChat } from "../context/ChatContext";
 
 function Chat() {
   const { messages } = useChat();
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -18,24 +20,61 @@ function Chat() {
   }, [messages]);
 
   return (
-    <div className="chat-page">
-      <ChatSidebar />
+    <div className={`chat-page ${sidebarOpen ? "sidebar-open" : ""}`}>
 
+      {/* Mobile top bar */}
+      <header className="mobile-chat-header">
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open chat menu"
+        >
+          ☰
+        </button>
+
+        <div className="mobile-chat-title">
+          <span className="mobile-remo-icon">🤖</span>
+          <span>Remo</span>
+        </div>
+      </header>
+
+      {/* Dark overlay when sidebar is open */}
+      <div
+        className="mobile-sidebar-overlay"
+        onClick={() => setSidebarOpen(false)}
+      />
+
+      {/* Sidebar */}
+      <div className="mobile-sidebar-wrapper">
+        <button
+          className="mobile-close-sidebar"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close chat menu"
+        >
+          ✕
+        </button>
+
+        <ChatSidebar />
+      </div>
+
+      {/* Main chat */}
       <main className="chat-main">
+
         <div className="messages">
           {messages.map((msg, index) => (
-          <MessageBubble
-  key={index}
-  sender={msg.sender}
-  text={msg.text}
-  loading={msg.loading}
-/>
+            <MessageBubble
+              key={index}
+              sender={msg.sender}
+              text={msg.text}
+              loading={msg.loading}
+            />
           ))}
 
           <div ref={messagesEndRef} />
         </div>
 
         <ChatInput />
+
       </main>
     </div>
   );
